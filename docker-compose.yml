@@ -1,0 +1,7 @@
+services:
+  bancoagricola-frontend:
+    build: .
+    container_name: bancoagricola-hackathon-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
