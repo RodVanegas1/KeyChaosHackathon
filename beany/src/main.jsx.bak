@@ -202,7 +202,7 @@ function App(){
   const [status,setStatus]=useState('Listo');
   const [analytics,setAnalytics]=useState({});
   const [conversationPhase,setConversationPhase]=useState('VERIFICANDO_IDENTIDAD');
-  const recognitionRef=useRef(null), messagesRef=useRef([]), messagesBoxRef=useRef(null), runningRef=useRef(false), busyRef=useRef(false), verifiedRef=useRef(false), verifiedNameRef=useRef(''), closingRef=useRef(false), micStreamRef=useRef(null), micReadyRef=useRef(false), recognitionStartingRef=useRef(false), retryTimerRef=useRef(null), transcriptBufferRef=useRef(''), interimRef=useRef(''), transcriptTimerRef=useRef(null), lastHandledTextRef=useRef(''), selectedClientRef=useRef('');
+  const recognitionRef=useRef(null), messagesRef=useRef([]), messagesBoxRef=useRef(null), runningRef=useRef(false), busyRef=useRef(false), verifiedRef=useRef(false), verifiedNameRef=useRef(''), closingRef=useRef(false), micStreamRef=useRef(null), micReadyRef=useRef(false), recognitionStartingRef=useRef(false), retryTimerRef=useRef(null), transcriptBufferRef=useRef(''), interimRef=useRef(''), transcriptTimerRef=useRef(null), lastHandledTextRef=useRef('');
   useEffect(()=>{messagesRef.current=messages},[messages]);
   useEffect(()=>{
     const box=messagesBoxRef.current;
@@ -344,23 +344,14 @@ function App(){
   async function start(){
     if(running) return;
     clearTimeout(transcriptTimerRef.current); transcriptBufferRef.current=''; interimRef.current='';
-    closingRef.current=false; verifiedRef.current=false; verifiedNameRef.current=''; selectedClientRef.current=''; lastHandledTextRef.current=''; setMessages([]); setAnalytics({}); setConversationPhase('VERIFICANDO_IDENTIDAD');
+    closingRef.current=false; verifiedRef.current=false; verifiedNameRef.current=''; lastHandledTextRef.current=''; setMessages([]); setAnalytics({}); setConversationPhase('VERIFICANDO_IDENTIDAD');
     setStatus('Verificando…');
     const ok=await openMic(); if(!ok) return;
     const r=setupRecognition();
     runningRef.current=true; setRunning(true);
-    const selected = VALID_NAMES[Math.floor(Math.random()*VALID_NAMES.length)];
-    selectedClientRef.current = selected;
-    const openings=[
-      `Hola, soy Beany. ¿Tengo el gusto con ${selected}?`,
-      `Hola, te saluda Beany. ¿Tengo el gusto con ${selected}?`,
-      `Buen día, soy Beany. ¿Hablo con ${selected}?`,
-      `Hola, soy Beany. ¿Estoy hablando con ${selected}?`,
-      `Hola, te saluda Beany de Bancoagrícola. ¿Tengo el gusto con ${selected}?`
-    ];
-    const opening=openings[Math.floor(Math.random()*openings.length)];
+    const opening='Hola, soy Beany, asistente virtual de Bancoagrícola. Te llamo para dar seguimiento preventivo a un pago. ¿Tengo el gusto con el titular?';
     add('assistant',opening); setStatus('Beany está hablando');
-    speak(opening,()=>{setStatus('Escuchando');setTimeout(()=>startRecognition(),100);});
+    speak(opening,()=>{setStatus('Escuchando');setTimeout(()=>startRecognition(),180);});
   }
 
   async function handleUser(text){
@@ -371,19 +362,12 @@ function App(){
     lastHandledTextRef.current=dedupeKey;
     setPartial(''); add('user',t);
     if(!verifiedRef.current){
-      const selected = selectedClientRef.current;
-      const normalized = normalizeName(t);
-      const yes = /\b(s[ií]|si|sí|correcto|correcta|as[ií] es|soy yo|exacto|exactamente|con esa persona)\b/i.test(t);
-      const no = /\b(no|no soy|se equivocaron|equivocado|equivocada|otro|otra persona)\b/i.test(t);
-      const mentionedOtherName = matchedDatabaseName(t);
-      const selectedMatches = selected && (normalized.includes(normalizeName(selected)) || (mentionedOtherName && mentionedOtherName===selected));
-      if(yes || selectedMatches){
+      const matched = matchedDatabaseName(t);
+      if(matched){
         verifiedRef.current=true;
-        verifiedNameRef.current=selected;
+        verifiedNameRef.current=matched.split(' ').map((x,i)=>i===0?x:x).join(' ');
         setConversationPhase('EXPLORANDO_SITUACION');
         setAnalytics(a=>({...a,verified:'Identidad verificada'}));
-      } else if(no || (mentionedOtherName && mentionedOtherName!==selected)){
-        await finish('Lo siento, creo que nos equivocamos de contacto. Que tengas un feliz día.', 'No confirmado'); return;
       } else {
         await finish('Lo siento, creo que nos equivocamos de contacto. Que tengas un feliz día.', 'No confirmado'); return;
       }
