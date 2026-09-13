@@ -245,6 +245,39 @@ CREATE TABLE compromiso_pago (
     INDEX idx_compromiso_fecha_estado (fecha_compromiso, estado)
 ) ENGINE=InnoDB;
 
+-- ------------------------------------------------------------
+-- 9. Perfil de usuario (datos blandos / demográficos)
+--    Complementa a `usuario` sin ensuciar la tabla transaccional.
+-- ------------------------------------------------------------
+CREATE TABLE perfil_usuario (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id BIGINT UNSIGNED NOT NULL,
+
+    edad SMALLINT UNSIGNED NULL,
+    sexo ENUM('M', 'F', 'OTRO') NULL,
+    ocupacion VARCHAR(150) NULL,
+
+    tipo_ingreso ENUM('FIJO', 'VARIABLE', 'INFORMAL') NOT NULL,
+    rango_salario_estimado ENUM(
+        'BAJO',
+        'MEDIO_BAJO',
+        'MEDIO',
+        'MEDIO_ALTO',
+        'ALTO'
+    ) NULL,
+
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_perfil_usuario
+        FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+
+    CONSTRAINT uq_perfil_usuario UNIQUE (usuario_id),
+
+    INDEX idx_perfil_tipo_ingreso (tipo_ingreso)
+) ENGINE=InnoDB;
+
 -- ============================================================
 -- Fin del esquema V1
 -- ============================================================
