@@ -4,7 +4,8 @@ import {
   Menu, Bell, QrCode, UserRound, ChevronRight, CreditCard, Send, 
   Smartphone, ReceiptText, ShoppingCart, Gift, Home, Package, 
   HandCoins, LayoutDashboard, Search, X, Moon, Sun, ShieldAlert, 
-  DollarSign, Activity, MessageCircle, Eye, Briefcase, History
+  DollarSign, Activity, MessageCircle, Eye, Briefcase, History, Award, Flame,
+  Target, TrendingUp, Trophy, Calendar
 } from 'lucide-react';
 import './styles.css';
 
@@ -43,6 +44,13 @@ const extraStyles = `
   .dark-theme .bottom-nav { border-top: 1px solid var(--border-color); }
   .dark-theme input { background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); }
   .dark-theme .modal-header p, .dark-theme .stat-box div, .dark-theme .analytics-subtitle { color: #aaa !important; }
+
+  /* Corrección de puntos en Modo Oscuro */
+  .dark-theme .points-badge {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+  }
 
   /* Corrección de iconos en círculos de colores para Modo Oscuro (Forzar iconos a negro) */
   .dark-theme .action-icon {
@@ -105,7 +113,7 @@ const extraStyles = `
   }
   .analytics-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; align-self: flex-start; }
   .analytics-subtitle { font-size: 13px; color: #888; margin-bottom: 15px; align-self: flex-start; }
-  
+    
   .pie-chart-container {
     display: flex;
     align-items: center;
@@ -138,12 +146,12 @@ const extraStyles = `
   .client-list { display: flex; flex-direction: column; gap: 12px; padding-bottom: 90px; }
   .client-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid transparent; transition: border-color 0.2s;}
   .client-card:hover { border-color: #ffd719; }
-  
+    
   .risk-badge { padding: 4px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
   .risk-high { background: #ffebee; color: #d32f2f; }
   .risk-medium { background: #fff8e1; color: #f57f17; }
   .risk-low { background: #e8f5e9; color: #2e7d32; }
-  
+    
   /* Botón de Ojito */
   .eye-btn { background: rgba(82, 197, 223, 0.1); color: #52c5df; border: none; padding: 8px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-left: 10px; }
   .eye-btn:hover { background: #52c5df; color: #fff; transform: scale(1.05); }
@@ -183,9 +191,14 @@ function UserView() {
       <header className="header">
         <button className="plain icon" aria-label="Menú"><Menu size={30}/></button>
         <div className="header-actions">
-          <button className="header-action" aria-label="Mensajería">
-            <span className="bell"><Bell size={25}/><b>3</b></span><small>Mensajería</small>
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button className="header-action" aria-label="Coach Financiero">
+              <Briefcase size={23}/><small>Coach Financiero</small>
+            </button>
+            <button className="header-action" aria-label="Mensajería">
+              <span className="bell"><Bell size={25}/><b>3</b></span><small>Mensajería</small>
+            </button>
+          </div>
           <button className="header-action" aria-label="Mi QR">
             <span className="qr"><QrCode size={23}/></span><small>Mi QR</small>
           </button>
@@ -193,11 +206,16 @@ function UserView() {
       </header>
 
       <main className="content">
-        <section className="welcome">
-          <span className="avatar"><UserRound size={26}/></span>
-          <div>
-            <div className="welcome-title">Bienvenido <ChevronRight size={22}/></div>
-            <div className="welcome-sub">Tu banca, simple y segura.</div>
+        <section className="welcome" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+            <span className="avatar"><UserRound size={26}/></span>
+            <div style={{ minWidth: 0 }}>
+              <div className="welcome-title">Bienvenido <ChevronRight size={22}/></div>
+              <div className="welcome-sub">Tu banca, simple y segura.</div>
+            </div>
+          </div>
+          <div className="points-badge" style={{ background: '#fff', border: '1px solid #eee', padding: '6px 12px', borderRadius: '16px', fontWeight: 'bold', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+            ⭐ <strong>750 pts</strong>
           </div>
         </section>
 
@@ -219,6 +237,77 @@ function UserView() {
         <button className="single-card promo" type="button">
           <ShoppingCart size={30}/><strong>Promociones y descuentos</strong><ChevronRight className="ml-auto" size={27}/>
         </button>
+
+        {/* Apartados rediseñados idénticos a la referencia visual */}
+        <div style={{ padding: '0 20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginTop: '16px' }}>
+            
+            {/* Izquierda: Racha de pagos */}
+            <div className="single-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '14px', padding: '14px', margin: 0, position: 'relative', overflow: 'hidden', border: '1px solid rgba(255,167,38,0.2)', minWidth: 0 }}>
+              <div style={{ position: 'absolute', top: '-20px', left: '-20px', width: '70px', height: '70px', background: 'radial-gradient(circle, rgba(255,183,77,0.35) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-25px', right: '-25px', width: '90px', height: '90px', background: 'linear-gradient(135deg, rgba(255,152,0,0.15), rgba(255,235,59,0.25))', borderRadius: '50%', pointerEvents: 'none' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative', zIndex: 1, minWidth: 0 }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #ff9800, #f44336)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(244,67,54,0.35)', flexShrink: '0', position: 'relative' }}>
+                  <Flame size={22} color="#fff" fill="#fff" />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: '11px', opacity: 0.8, fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>Racha</div>
+                  <div style={{ fontSize: '18px', fontWeight: '800', display: 'flex', alignItems: 'baseline', gap: '3px', whiteSpace: 'nowrap' }}>
+                    <span style={{ background: 'linear-gradient(90deg, #ff6d00, #ffab00)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '22px' }}>15</span>
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: 'inherit' }}>Pagos</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Apartado de Bono en 2 líneas */}
+              <div style={{ background: 'rgba(255, 193, 7, 0.12)', borderRadius: '12px', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: '6px', border: '1px solid rgba(255,193,7,0.25)', position: 'relative', zIndex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+                  <Trophy size={16} color="#f57f17" style={{ flexShrink: 0 }} />
+                  <span style={{ fontSize: '11px', fontWeight: '700', opacity: 0.9, whiteSpace: 'nowrap' }}>¡Excelente!</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                  <div style={{ background: '#2e7d32', color: '#fff', padding: '3px 10px', borderRadius: '20px', fontSize: '10px', fontWeight: '800', boxShadow: '0 2px 6px rgba(46,125,50,0.3)', whiteSpace: 'nowrap' }}>
+                    ★ Bono +100
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Derecha: Meta Adicional */}
+            <div className="single-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '12px', padding: '14px', margin: 0, position: 'relative', overflow: 'hidden', border: '1px solid rgba(52,211,153,0.2)', minWidth: 0, transform: 'translateX(-25px)' }}>
+              <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '70px', height: '70px', background: 'radial-gradient(circle, rgba(52,211,153,0.35) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-25px', right: '-25px', width: '90px', height: '90px', background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(52,211,153,0.25))', borderRadius: '50%', pointerEvents: 'none' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                  <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(16,185,129,0.3)', flexShrink: '0', marginLeft: '20px'}}>
+                    <Target size={22} color="#fff" style={{ transform: 'translateX(0px)' }} />
+                  </div>
+                  <strong style={{ fontSize: '13px', fontWeight: '800', lineHeight: '1.2' }}>Meta Adicional</strong>
+                </div>
+                <div style={{ color: '#10b981', flexShrink: 0 }}>
+                  <TrendingUp size={20} />
+                </div>
+              </div>
+
+              <div style={{ position: 'relative', width: '120px', height: '58px', margin: '0 auto', overflow: 'hidden', zIndex: 1, transform: 'translateX(-px)' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '120px', height: '120px', borderRadius: '50%', border: '9px solid var(--border-color, #eee)', boxSizing: 'border-box' }} />
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '120px', height: '120px', borderRadius: '50%', border: '9px solid transparent', borderTopColor: '#10b981', borderRightColor: '#10b981', boxSizing: 'border-box', transform: 'rotate(-45deg)', boxShadow: '0 2px 8px rgba(16,185,129,0.2)' }} />
+                <div style={{ position: 'absolute', bottom: '2px', width: '100%', textAlign: 'center', fontSize: '13px', fontWeight: '800' }}>
+                  $25 <span style={{ fontSize: '11px', opacity: 0.7, fontWeight: '600' }}>de $50</span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+                <div style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 2px 6px rgba(16,185,129,0.1)', whiteSpace: 'nowrap' }}>
+                  <Calendar size={13} /> Este mes
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </main>
 
       <nav className="bottom-nav">
@@ -238,7 +327,6 @@ function AdminView() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    // Se insertan los 6 arquetipos de clientes con la data ampliada (perfil e historial)
     const fetchClients = async () => {
       try {
         const mockData = [
@@ -261,19 +349,17 @@ function AdminView() {
     return clients.filter(c => c.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [clients, searchTerm]);
 
-  // Cálculos precisos para el gráfico circular dividiendo en 3 categorías
   const statsPie = useMemo(() => {
     if (clients.length === 0) return { high: 0, medium: 0, low: 0, highPercent: 0, mediumPercent: 0, lowPercent: 0 };
     const high = clients.filter(c => c.riesgo_score > 80).length;
     const medium = clients.filter(c => c.riesgo_score > 30 && c.riesgo_score <= 80).length;
     const low = clients.filter(c => c.riesgo_score <= 30).length;
-    
+     
     const total = clients.length;
     const highPercent = Math.round((high / total) * 100);
     const mediumPercent = Math.round((medium / total) * 100);
-    // Se resta para asegurar que sume el 100% exacto tras redondeos
     const lowPercent = 100 - highPercent - mediumPercent; 
-    
+     
     return { high, medium, low, highPercent, mediumPercent, lowPercent };
   }, [clients]);
 
@@ -299,7 +385,6 @@ function AdminView() {
           
           <div className="pie-chart-container">
             <svg width="110" height="110" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
-              {/* Segmento de Riesgo Bajo */}
               <circle 
                 cx="50" cy="50" r={radius} 
                 fill="transparent" 
@@ -308,7 +393,6 @@ function AdminView() {
                 strokeDasharray={`${lowStroke} ${circumference}`}
                 strokeDashoffset={-(highStroke + mediumStroke)}
               />
-              {/* Segmento de Riesgo Medio */}
               <circle 
                 cx="50" cy="50" r={radius} 
                 fill="transparent" 
@@ -317,7 +401,6 @@ function AdminView() {
                 strokeDasharray={`${mediumStroke} ${circumference}`}
                 strokeDashoffset={-highStroke}
               />
-              {/* Segmento de Riesgo Alto */}
               <circle 
                 cx="50" cy="50" r={radius} 
                 fill="transparent" 
@@ -361,7 +444,7 @@ function AdminView() {
                 <strong style={{ display: 'block', fontSize: '16px', marginBottom: '4px' }}>{client.nombre}</strong>
                 <small style={{ color: '#888' }}>{client.estado_gestion}</small>
               </div>
-              
+               
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div style={{ textAlign: 'right' }}>
                   <span className={`risk-badge ${client.riesgo_score > 80 ? 'risk-high' : client.riesgo_score > 30 ? 'risk-medium' : 'risk-low'}`}>
@@ -383,12 +466,11 @@ function AdminView() {
         </div>
       </main>
 
-      {/* MODAL EMERGENTE EXPANDIDO CON NUEVOS DATOS */}
       {selectedClient && (
         <div className="modal-overlay" onClick={() => setSelectedClient(null)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedClient(null)}><X size={24} /></button>
-            
+             
             <div className="modal-header">
               <h2 style={{ margin: '0 0 5px 0' }}>{selectedClient?.nombre}</h2>
               <p style={{ margin: 0, color: '#888', display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -397,14 +479,12 @@ function AdminView() {
             </div>
 
             <div className="stat-grid">
-              {/* Nuevo: Perfil del Arquetipo */}
               <div className="stat-box">
                 <Briefcase size={20} color="#ff9800" style={{ marginBottom: '8px' }}/>
                 <div style={{ fontSize: '13px', color: '#888' }}>Perfil Cliente</div>
                 <strong style={{ fontSize: '15px' }}>{selectedClient?.perfil}</strong>
               </div>
 
-              {/* Nuevo: Historial de Pago */}
               <div className="stat-box">
                 <History size={20} color="#3f51b5" style={{ marginBottom: '8px' }}/>
                 <div style={{ fontSize: '13px', color: '#888' }}>Historial</div>
@@ -416,7 +496,7 @@ function AdminView() {
                 <div style={{ fontSize: '13px', color: '#888' }}>Probabilidad Impago</div>
                 <strong style={{ fontSize: '20px' }}>{selectedClient?.riesgo_score}%</strong>
               </div>
-              
+               
               <div className="stat-box">
                 <DollarSign size={20} color="#52c5df" style={{ marginBottom: '8px' }}/>
                 <div style={{ fontSize: '13px', color: '#888' }}>Deuda Total</div>
@@ -428,7 +508,7 @@ function AdminView() {
                 <div style={{ fontSize: '13px', color: '#888' }}>Días en Mora</div>
                 <strong style={{ fontSize: '20px' }}>{selectedClient?.dias_mora} días</strong>
               </div>
-              
+               
               <div className="stat-box">
                 <MessageCircle size={20} color="#4caf50" style={{ marginBottom: '8px' }}/>
                 <div style={{ fontSize: '13px', color: '#888' }}>Estado LLM</div>
