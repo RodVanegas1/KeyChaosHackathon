@@ -54,12 +54,14 @@ app.add_middleware(
 # se pueden definir esas mismas variables en .env
 # ============================================================
 
+# En Railway, estas variables deben venir del servicio MySQL.
+# En local también puedes definirlas en tu entorno.
 DB_CONFIG = {
-    "host": os.getenv("MYSQLHOST", "localhost"),
+    "host": os.getenv("MYSQLHOST"),
     "port": int(os.getenv("MYSQLPORT", "3306")),
-    "user": os.getenv("MYSQLUSER", "root"),
-    "password": os.getenv("MYSQLPASSWORD", ""),
-    "database": os.getenv("MYSQLDATABASE", "mora_demo"),
+    "user": os.getenv("MYSQLUSER"),
+    "password": os.getenv("MYSQLPASSWORD"),
+    "database": os.getenv("MYSQLDATABASE"),
     "autocommit": False,
     "connection_timeout": 10,
 }
@@ -70,6 +72,12 @@ def get_db_connection():
     Crea una conexión nueva a MySQL.
     En Railway toma automáticamente las variables MYSQL*.
     """
+    required = ("host", "user", "password", "database")
+    missing = [key for key in required if not DB_CONFIG.get(key)]
+    if missing:
+        print(f"Faltan variables de MySQL: {', '.join(missing)}")
+        return None
+
     try:
         return mysql.connector.connect(**DB_CONFIG)
     except Error as exc:
