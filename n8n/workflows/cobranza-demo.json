@@ -1,0 +1,75 @@
+{
+  "name": "Cobranza — Demo Local",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cobranza-demo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b9b5c2d2-8ef5-4c15-95b4-2e6d3ed8f1aa",
+      "name": "Entrada demo",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "cobranza-demo"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body ?? $json;\nconst customerId = String(body.customer_id ?? 'DEMO-001');\nconst message = String(body.message ?? '').trim();\n\nreturn [{\n  json: {\n    ok: true,\n    customer_id: customerId,\n    message_received: message,\n    conversation_status: 'active',\n    intent: 'pending_analysis',\n    next_step: 'connect_ai_agent',\n    note: 'Demo local: todavía no conecta WhatsApp ni IA.'\n  }\n}];"
+      },
+      "id": "6d0a87ae-25fa-4a42-b01a-31d3dff7f09d",
+      "name": "Normalizar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "10a0d2dc-3c57-4aa1-a3f3-3e1f2a14d2d0",
+      "name": "Respuesta demo",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [800, 300]
+    }
+  ],
+  "connections": {
+    "Entrada demo": {
+      "main": [
+        [
+          {
+            "node": "Normalizar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Respuesta demo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e5e2a92a-e75f-48ef-81cf-6a6c301a8aa6",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "tags": []
+}

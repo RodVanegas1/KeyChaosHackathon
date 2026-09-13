@@ -1,0 +1,9 @@
+BANCOAGRÍCOLA HACKATHON — n8n LOCAL
+
+1) Abre esta carpeta en Git Bash.
+2) Ejecuta: docker compose up -d
+3) Abre: http://localhost:5678
+4) Crea tu usuario local.
+5) Importa workflows/cobranza-demo.json desde n8n.
+
+No subas credenciales reales al repositorio.

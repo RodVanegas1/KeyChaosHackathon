@@ -1,0 +1,6 @@
+# n8n local data / secrets
+.env
+.n8n/
+node_modules/
+.DS_Store
+*.log
