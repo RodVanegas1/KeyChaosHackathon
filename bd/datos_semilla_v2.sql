@@ -5,7 +5,7 @@
 -- Requiere: mora_demo_v1.sql ya ejecutado (esquema base)
 -- ============================================================
 
-USE mora_demo;
+USE railway;
 
 -- ------------------------------------------------------------
 -- 0. Tabla nueva: perfil_usuario

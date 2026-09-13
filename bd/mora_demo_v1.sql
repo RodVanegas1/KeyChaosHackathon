@@ -5,8 +5,7 @@
 -- Datos de demostración
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS mora_demo;
-USE mora_demo;
+USE railway;
 
 -- ------------------------------------------------------------
 -- 1. Usuarios
